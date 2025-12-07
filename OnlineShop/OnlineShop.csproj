@@ -10,4 +10,8 @@
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Repositories\InMemoryProductsRepository.cs" />
+  </ItemGroup>
+
 </Project>
