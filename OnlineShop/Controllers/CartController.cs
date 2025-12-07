@@ -34,5 +34,19 @@ namespace OnlineShop.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Subtract(int productId)
+        {
+            _cartsRepository.Subtract(productId, Constants.UserId);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Clear()
+        {
+            _cartsRepository.Clear(Constants.UserId);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
