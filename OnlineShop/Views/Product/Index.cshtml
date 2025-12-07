@@ -1,8 +1,17 @@
 ﻿@model Product
+@{
+    ViewData["Title"] = "Описание товара";
+}
 
-<div class="row justify-content-center">
-    @if (Model != null)
-    {
+<div class="text-center text-uppercase text-success mb-5 mt-5">
+    <h2 class="row-title">Описание товара</h2>
+</div>
+
+@if (Model != null)
+{
+    ViewData["Title"] = @Model.Name;
+
+    <div class="row justify-content-center">
         <div class="col-3 mb-3">
             <div class="card h-100 bg-light">
                 <img class="card-img-top" src=@Model.PhotoPath alt="Фото товара">
@@ -16,6 +25,12 @@
                        asp-route-productId="@Model.Id">
                         Добавить в корзину
                     </a>
+                    <a class="btn btn-outline-secondary mt-3"
+                       asp-controller="Favorite"
+                       asp-action="Add"
+                       asp-route-productId="@Model.Id">
+                        Добавить в избранное
+                    </a>
                 </div>
             </div>
         </div>
@@ -26,22 +41,19 @@
                 </div>
             </div>
         </div>
-    }
-    else
-    {
-        <div class="col-auto m-5">
-            <h2>Такого продукта не существует!</h2>
-        </div>
-    }
-</div>
-
-
-<div class="row justify-content-center">
-    <div class="col-auto m-5">
-        <a class="btn btn-outline-success"
-           asp-controller="Home"
-           asp-action="Index">
-            Продолжить покупки
-        </a>
     </div>
+}
+else
+{
+    <div class="text-center">
+        <h2>Такого товара не существует!</h2>
+    </div>
+}
+
+<div class="text-center m-5">
+    <a class="btn btn-outline-success"
+       asp-controller="Home"
+       asp-action="Index">
+        Продолжить покупки
+    </a>
 </div>
