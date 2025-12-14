@@ -15,5 +15,16 @@ namespace OnlineShop.Controllers
         {
             return View();
         }
+
+        public IActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registration(Registration registration)
+        {
+            return View();
+        }
     }
 }
