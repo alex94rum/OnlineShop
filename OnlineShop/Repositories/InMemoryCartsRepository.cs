@@ -1,88 +1,87 @@
 ﻿using OnlineShop.Interfaces;
 using OnlineShop.Models;
 
-namespace OnlineShop.Repositories
+namespace OnlineShop.Repositories;
+
+public class InMemoryCartsRepository : ICartsRepository
 {
-    public class InMemoryCartsRepository : ICartsRepository
+    private readonly List<Cart> _carts = [];
+
+    public Cart? TryGetByUserId(string userId)
     {
-        private readonly List<Cart> _carts = [];
+        return _carts.FirstOrDefault(cart => cart.UserId == userId);
+    }
 
-        public Cart? TryGetByUserId(string userId)
+    public void Add(Product product, string userId)
+    {
+        var existingCart = TryGetByUserId(userId);
+
+        if (existingCart == null)
         {
-            return _carts.FirstOrDefault(cart => cart.UserId == userId);
-        }
-
-        public void Add(Product product, string userId)
-        {
-            var existingCart = TryGetByUserId(userId);
-
-            if (existingCart == null)
+            existingCart = new Cart()
             {
-                existingCart = new Cart()
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Items = new List<CartItem>()
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Items = new List<CartItem>()
-                    {
-                        new CartItem()
-                        {
-                            Id = Guid.NewGuid(),
-                            Product = product,
-                            Quantity = 1
-                        }
-                    }
-                };
-                _carts.Add(existingCart);
-            }
-            else
-            {
-                var existingCartItem = existingCart.Items.FirstOrDefault(item =>
-                    item.Product.Id == product.Id);
-
-                if (existingCartItem == null)
-                {
-                    var newCartItem = new CartItem()
+                    new CartItem()
                     {
                         Id = Guid.NewGuid(),
                         Product = product,
                         Quantity = 1
-                    };
-                    existingCart.Items.Add(newCartItem);
+                    }
                 }
-                else
-                {
-                    existingCartItem.Quantity++;
-                }
-            }
+            };
+            _carts.Add(existingCart);
         }
-
-        public void Subtract(int productId, string userId)
+        else
         {
-            var existingCart = TryGetByUserId(userId);
-
-            var existingCartItem = existingCart?.Items.FirstOrDefault(item => item.Product.Id == productId);
+            var existingCartItem = existingCart.Items.FirstOrDefault(item =>
+                item.Product.Id == product.Id);
 
             if (existingCartItem == null)
             {
-                return;
+                var newCartItem = new CartItem()
+                {
+                    Id = Guid.NewGuid(),
+                    Product = product,
+                    Quantity = 1
+                };
+                existingCart.Items.Add(newCartItem);
             }
-
-            existingCartItem.Quantity--;
-
-            if (existingCartItem.Quantity == 0)
+            else
             {
-                existingCart?.Items.Remove(existingCartItem);
+                existingCartItem.Quantity++;
             }
         }
+    }
 
-        public void Clear(string userId)
+    public void Subtract(int productId, string userId)
+    {
+        var existingCart = TryGetByUserId(userId);
+
+        var existingCartItem = existingCart?.Items.FirstOrDefault(item => item.Product.Id == productId);
+
+        if (existingCartItem == null)
         {
-            var existingCart = TryGetByUserId(userId);
+            return;
+        }
 
-            if (existingCart != null)
-            {
-                _carts.Remove(existingCart);
-            }
+        existingCartItem.Quantity--;
+
+        if (existingCartItem.Quantity == 0)
+        {
+            existingCart?.Items.Remove(existingCartItem);
+        }
+    }
+
+    public void Clear(string userId)
+    {
+        var existingCart = TryGetByUserId(userId);
+
+        if (existingCart != null)
+        {
+            _carts.Remove(existingCart);
         }
     }
 }

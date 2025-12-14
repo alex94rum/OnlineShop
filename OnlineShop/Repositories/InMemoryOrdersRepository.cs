@@ -1,19 +1,18 @@
 ﻿using OnlineShop.Interfaces;
 using OnlineShop.Models;
 
-namespace OnlineShop.Repositories
+namespace OnlineShop.Repositories;
+
+public class InMemoryOrdersRepository : IOrdersRepository
 {
-    public class InMemoryOrdersRepository : IOrdersRepository
+    private readonly List<Order> _orders = [];
+
+    public void Add(Order order)
     {
-        private readonly List<Order> _orders = [];
+        order.Id = Guid.NewGuid();
+        order.CreationDateTime = DateTime.Now;
+        order.DeliveryUser.Id = Guid.NewGuid();
 
-        public void Add(Order order)
-        {
-            order.Id = Guid.NewGuid();
-            order.CreationDateTime = DateTime.Now;
-            order.DeliveryUser.Id = Guid.NewGuid();
-
-            _orders.Add(order);
-        }
+        _orders.Add(order);
     }
 }

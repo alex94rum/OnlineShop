@@ -1,64 +1,63 @@
 ﻿using OnlineShop.Interfaces;
 using OnlineShop.Models;
 
-namespace OnlineShop.Repositories
+namespace OnlineShop.Repositories;
+
+public class InMemoryFavoritesRepository : IFavoritesRepository
 {
-    public class InMemoryFavoritesRepository : IFavoritesRepository
+    private readonly List<Favorite> _favorites = [];
+
+    public Favorite? TryGetByUserId(string userId)
     {
-        private readonly List<Favorite> _favorites = [];
+        return _favorites.FirstOrDefault(x => x.UserId == userId);
+    }
 
-        public Favorite? TryGetByUserId(string userId)
+    public void Add(Product product, string userId)
+    {
+        var existingFavorite = TryGetByUserId(userId);
+
+        if (existingFavorite == null)
         {
-            return _favorites.FirstOrDefault(x => x.UserId == userId);
+            existingFavorite = new Favorite()
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Items = [product]
+            };
+
+            _favorites.Add(existingFavorite);
         }
-
-        public void Add(Product product, string userId)
+        else
         {
-            var existingFavorite = TryGetByUserId(userId);
+            var existingFavoriteItem = existingFavorite.Items.FirstOrDefault(x => x.Id == product.Id);
 
-            if (existingFavorite == null)
+            if (existingFavoriteItem == null)
             {
-                existingFavorite = new Favorite()
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = userId,
-                    Items = [product]
-                };
-
-                _favorites.Add(existingFavorite);
-            }
-            else
-            {
-                var existingFavoriteItem = existingFavorite.Items.FirstOrDefault(x => x.Id == product.Id);
-
-                if (existingFavoriteItem == null)
-                {
-                    existingFavorite.Items.Add(product);
-                }
+                existingFavorite.Items.Add(product);
             }
         }
+    }
 
-        public void Delete(int productId, string userId)
+    public void Delete(int productId, string userId)
+    {
+        var existingFavorite = TryGetByUserId(userId);
+
+        var existingFavoriteItem = existingFavorite?.Items.FirstOrDefault(x => x.Id == productId);
+
+        if (existingFavoriteItem != null)
         {
-            var existingFavorite = TryGetByUserId(userId);
-
-            var existingFavoriteItem = existingFavorite?.Items.FirstOrDefault(x => x.Id == productId);
-
-            if (existingFavoriteItem != null)
-            {
-                existingFavorite?.Items.Remove(existingFavoriteItem);
-            }
-
+            existingFavorite?.Items.Remove(existingFavoriteItem);
         }
 
-        public void Clear(string userId)
-        {
-            var existingFavorite = TryGetByUserId(userId);
+    }
 
-            if (existingFavorite != null)
-            {
-                _favorites.Remove(existingFavorite);
-            }
+    public void Clear(string userId)
+    {
+        var existingFavorite = TryGetByUserId(userId);
+
+        if (existingFavorite != null)
+        {
+            _favorites.Remove(existingFavorite);
         }
     }
 }

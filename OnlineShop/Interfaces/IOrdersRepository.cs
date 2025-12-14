@@ -1,10 +1,8 @@
 ﻿using OnlineShop.Models;
 
-namespace OnlineShop.Interfaces
-{
+namespace OnlineShop.Interfaces;
 
-    public interface IOrdersRepository
-    {
-        void Add(Order order);
-    }
+public interface IOrdersRepository
+{
+    void Add(Order order);
 }

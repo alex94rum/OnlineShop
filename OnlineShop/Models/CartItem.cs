@@ -1,11 +1,10 @@
-﻿namespace OnlineShop.Models
-{
-    public class CartItem
-    {
-        public Guid Id { get; set; }
-        public Product? Product { get; set; }
-        public int Quantity { get; set; }
+﻿namespace OnlineShop.Models;
 
-        public decimal Cost => Product?.Cost * Quantity ?? 0;
-    }
+public class CartItem
+{
+    public Guid Id { get; set; }
+    public Product? Product { get; set; }
+    public int Quantity { get; set; }
+
+    public decimal Cost => Product?.Cost * Quantity ?? 0;
 }

@@ -1,7 +1,6 @@
-﻿namespace OnlineShop
+﻿namespace OnlineShop;
+
+public class Constants
 {
-    public class Constants
-    {
-        public static string UserId = "UserId";
-    }
+    public static string UserId = "UserId";
 }

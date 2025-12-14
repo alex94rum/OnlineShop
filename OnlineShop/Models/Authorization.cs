@@ -1,9 +1,8 @@
-﻿namespace OnlineShop.Models
+﻿namespace OnlineShop.Models;
+
+public class Authorization
 {
-    public class Authorization
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public bool IsRememberMe { get; set; }
-    }
+    public string Login { get; set; }
+    public string Password { get; set; }
+    public bool IsRememberMe { get; set; }
 }

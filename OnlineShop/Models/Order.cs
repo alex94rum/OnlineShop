@@ -1,11 +1,10 @@
-﻿namespace OnlineShop.Models
+﻿namespace OnlineShop.Models;
+
+public class Order
 {
-    public class Order
-    {
-        public Guid Id { get; set; }
-        public string UserId { get; set; }
-        public List<CartItem> Items { get; set; }
-        public DeliveryUser DeliveryUser { get; set; }
-        public DateTime CreationDateTime { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string UserId { get; set; }
+    public List<CartItem> Items { get; set; }
+    public DeliveryUser DeliveryUser { get; set; }
+    public DateTime CreationDateTime { get; set; }
 }

@@ -1,23 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Interfaces;
-using OnlineShop.Repositories;
 
-namespace OnlineShop.Controllers
+namespace OnlineShop.Controllers;
+
+public class ProductController : Controller
 {
-    public class ProductController : Controller
+    private readonly IProductsRepository _productsRepository;
+
+    public ProductController(IProductsRepository productsRepository)
     {
-        private readonly IProductsRepository _productsRepository;
+        _productsRepository = productsRepository;
+    }
 
-        public ProductController(IProductsRepository productsRepository)
-        {
-            _productsRepository = productsRepository;
-        }
+    public IActionResult Index(int id)
+    {
+        var product = _productsRepository.TryGetById(id);
 
-        public IActionResult Index(int id)
-        {
-            var product = _productsRepository.TryGetById(id);
-
-            return View(product);
-        }
+        return View(product);
     }
 }
