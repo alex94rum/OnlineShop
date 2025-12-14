@@ -1,13 +1,22 @@
 ﻿namespace OnlineShop.Models
 {
-    public class Product(int id, string name, decimal cost, string? description)
+    public class Product
     {
-        public int Id { get; } = id;
-        public string Name { get; } = name;
-        public decimal Cost { get; } = cost;
-        public string? Description { get; } = description;
-        public string? PhotoPath { get; } = "/img/anyProduct.png";
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Cost { get; set; }
+        public string? Description { get; set; }
+        public string? PhotoPath { get; set; } = "/img/anyProduct.png";
 
-        public override string ToString() => $"{this.Id}{Environment.NewLine}{this.Name}{Environment.NewLine}{this.Cost:c}";
+        public Product()
+        { }
+
+        public Product(int id, string name, decimal cost, string? description)
+        {
+            Id = id;
+            Name = name;
+            Cost = cost;
+            Description = description;
+        }
     }
 }
