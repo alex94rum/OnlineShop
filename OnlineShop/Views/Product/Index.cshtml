@@ -31,6 +31,12 @@
                        asp-route-productId="@Model.Id">
                         Добавить в избранное
                     </a>
+                    <a class="btn btn-outline-secondary mt-3"
+                       asp-controller="Comparison"
+                       asp-action="Add"
+                       asp-route-productId="@Model.Id">
+                        Добавить в сравнение
+                    </a>
                 </div>
             </div>
         </div>
