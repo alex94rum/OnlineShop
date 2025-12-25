@@ -13,6 +13,7 @@ builder.Services.AddSingleton<ICartsRepository, InMemoryCartsRepository>();
 builder.Services.AddSingleton<IOrdersRepository, InMemoryOrdersRepository>();
 builder.Services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
 builder.Services.AddSingleton<IComparisonsRepository, InMemoryComparisonsRepository>();
+builder.Services.AddSingleton<IRolesRepository, InMemoryRolesRepository>();
 
 // добавление английской культуры по умолчанию
 builder.Services.Configure<RequestLocalizationOptions>(options =>

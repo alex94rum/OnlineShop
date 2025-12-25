@@ -4,7 +4,9 @@ using OnlineShop.Models;
 
 namespace OnlineShop.Controllers;
 
-public class AdminController(IProductsRepository productsRepository, IOrdersRepository ordersRepository) : Controller
+public class AdminController(IProductsRepository productsRepository,
+                                IOrdersRepository ordersRepository,
+                                IRolesRepository rolesRepository) : Controller
 {
     #region Orders
     public IActionResult Orders()
@@ -36,10 +38,46 @@ public class AdminController(IProductsRepository productsRepository, IOrdersRepo
         return View();
     }
 
+
+    #region Roles
     public IActionResult Roles()
+    {
+        var roles = rolesRepository.GetAll();
+
+        return View(roles);
+    }
+
+    public IActionResult AddRole()
     {
         return View();
     }
+
+    [HttpPost]
+    public IActionResult AddRole(Role role)
+    {
+        if (rolesRepository.TryGetByName(role.Name) != null)
+        {
+            ModelState.AddModelError("", "Такая роль уже существует!");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(role);
+        }
+
+        rolesRepository.Add(role);
+
+        return RedirectToAction(nameof(Roles));
+    }
+
+    public IActionResult DeleteRole(Guid roleId)
+    {
+        rolesRepository.Delete(roleId);
+
+        return RedirectToAction(nameof(Roles));
+    }
+
+    #endregion
 
     #region Products
     public IActionResult Products()
