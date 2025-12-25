@@ -4,12 +4,32 @@ using OnlineShop.Models;
 
 namespace OnlineShop.Controllers;
 
-public class AdminController(IProductsRepository productsRepository) : Controller
+public class AdminController(IProductsRepository productsRepository, IOrdersRepository ordersRepository) : Controller
 {
+    #region Orders
     public IActionResult Orders()
     {
-        return View();
+        var orders = ordersRepository.GetAll();
+
+        return View(orders);
     }
+
+    public IActionResult DetailOrder(Guid orderId)
+    {
+        var order = ordersRepository.TryGetById(orderId);
+
+        return View(order);
+    }
+
+    [HttpPost]
+    public IActionResult UpdateOrderStatus(Guid orderId, OrderStatus status)
+    {
+        ordersRepository.UpdateStatus(orderId, status);
+
+        return RedirectToAction(nameof(Orders));
+    }
+
+    #endregion
 
     public IActionResult Users()
     {
@@ -21,6 +41,7 @@ public class AdminController(IProductsRepository productsRepository) : Controlle
         return View();
     }
 
+    #region Products
     public IActionResult Products()
     {
         var products = productsRepository.GetAll();
@@ -41,7 +62,7 @@ public class AdminController(IProductsRepository productsRepository) : Controlle
     }
 
     [HttpPost]
-    public IActionResult AddProduct(Product product)
+    public ActionResult AddProduct(Product product)
     {
         if (!ModelState.IsValid)
         {
@@ -50,7 +71,7 @@ public class AdminController(IProductsRepository productsRepository) : Controlle
 
         productsRepository.Add(product);
 
-        return RedirectToAction(nameof(Products));
+        return RedirectToAction("Products");
     }
 
     public ActionResult UpdateProduct(int id)
@@ -61,7 +82,7 @@ public class AdminController(IProductsRepository productsRepository) : Controlle
     }
 
     [HttpPost]
-    public IActionResult UpdateProduct(Product product)
+    public ActionResult UpdateProduct(Product product)
     {
         if (!ModelState.IsValid)
         {
@@ -70,6 +91,7 @@ public class AdminController(IProductsRepository productsRepository) : Controlle
 
         productsRepository.Update(product);
 
-        return RedirectToAction(nameof(Products));
+        return RedirectToAction("Products");
     }
+    #endregion
 }
