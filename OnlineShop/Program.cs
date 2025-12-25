@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Localization;
 using OnlineShop.Interfaces;
 using OnlineShop.Repositories;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +14,22 @@ builder.Services.AddSingleton<IOrdersRepository, InMemoryOrdersRepository>();
 builder.Services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
 builder.Services.AddSingleton<IComparisonsRepository, InMemoryComparisonsRepository>();
 
+// добавление английской культуры по умолчанию
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en-US")
+    };
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+app.UseRequestLocalization(); // добавление культурыџ
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();

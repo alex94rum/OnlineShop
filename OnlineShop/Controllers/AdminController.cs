@@ -4,21 +4,9 @@ using OnlineShop.Models;
 
 namespace OnlineShop.Controllers;
 
-public class AdminController : Controller
+public class AdminController(IProductsRepository productsRepository) : Controller
 {
-    private readonly IProductsRepository _productsRepository;
-
-    public AdminController(IProductsRepository productsRepository)
-    {
-        _productsRepository = productsRepository;
-    }
-
     public IActionResult Orders()
-    {
-        return View();
-    }
-
-    public IActionResult Roles()
     {
         return View();
     }
@@ -28,15 +16,26 @@ public class AdminController : Controller
         return View();
     }
 
-    #region Products
+    public IActionResult Roles()
+    {
+        return View();
+    }
+
     public IActionResult Products()
     {
-        var products = _productsRepository.GetAll();
+        var products = productsRepository.GetAll();
 
         return View(products);
     }
 
-    public IActionResult AddProduct()
+    public IActionResult DeleteProduct(int id)
+    {
+        productsRepository.Delete(id);
+
+        return RedirectToAction("Products");
+    }
+
+    public ActionResult AddProduct()
     {
         return View();
     }
@@ -44,31 +43,33 @@ public class AdminController : Controller
     [HttpPost]
     public IActionResult AddProduct(Product product)
     {
-        _productsRepository.Add(product);
+        if (!ModelState.IsValid)
+        {
+            return View(product);
+        }
 
-        return RedirectToAction("Products", "Admin");
+        productsRepository.Add(product);
+
+        return RedirectToAction(nameof(Products));
     }
 
-    public IActionResult DeleteProduct(int id)
+    public ActionResult UpdateProduct(int id)
     {
-        _productsRepository.Delete(id);
+        var product = productsRepository.TryGetById(id);
 
-        return RedirectToAction("Products", "Admin");
-    }
-
-    public IActionResult UpdateProduct(int id)
-    {
-        var existingProduct = _productsRepository.TryGetById(id);
-
-        return View(existingProduct);
+        return View(product);
     }
 
     [HttpPost]
     public IActionResult UpdateProduct(Product product)
     {
-        _productsRepository.Update(product);
+        if (!ModelState.IsValid)
+        {
+            return View(product);
+        }
 
-        return RedirectToAction("Products", "Admin");
+        productsRepository.Update(product);
+
+        return RedirectToAction(nameof(Products));
     }
-    #endregion  
 }
