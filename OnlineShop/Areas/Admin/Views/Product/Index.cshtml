@@ -16,8 +16,9 @@
                 <div class="col-12">
                     <div class="text-end">
                         <a class="btn btn-outline-success mb-2 mt-2"
-                           asp-controller="Admin"
-                           asp-action="AddProduct">
+                           asp-area="Admin"
+                           asp-controller="Product"
+                           asp-action="Add">
                             Добавить новый продукт
                         </a>
                     </div>
@@ -38,6 +39,7 @@
                                     <td class="fw-bold">@(i + 1)</td>
                                     <td align="left">
                                         <a class="text-success"
+                                           asp-area=""
                                            asp-controller="Product"
                                            asp-action="Index"
                                            asp-route-Id="@Model[i].Id">
@@ -47,16 +49,18 @@
                                     <td>@Model[i].Cost.ToString("c")</td>
                                     <td>
                                         <a class="btn btn-outline-success"
-                                           asp-controller="Admin"
-                                           asp-action="UpdateProduct"
+                                           asp-area="Admin"
+                                           asp-controller="Product"
+                                           asp-action="Update"
                                            asp-route-Id="@Model[i].Id">
                                             Редактировать
                                         </a>
                                     </td>
                                     <td>
                                         <a class="btn btn-outline-success"
-                                           asp-controller="Admin"
-                                           asp-action="DeleteProduct"
+                                           asp-area="Admin"
+                                           asp-controller="Product"
+                                           asp-action="Delete"
                                            asp-route-Id="@Model[i].Id">
                                             Удалить
                                         </a>
@@ -83,8 +87,9 @@
             </div>
             <div class="text-center mt-5">
                 <a class="btn btn-outline-success mb-2 mt-2"
-                   asp-controller="Admin"
-                   asp-action="AddProduct">
+                   asp-area="Admin"
+                   asp-controller="Product"
+                   asp-action="Add">
                     Добавить новый продукт
                 </a>
             </div>

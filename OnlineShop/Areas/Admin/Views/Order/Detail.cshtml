@@ -43,8 +43,7 @@
                                     <td class="w-25"><span>Статус заказа</span></td>
                                     <td class="w-auto">
                                         <p>
-                                            <select asp-for="@Model.Status"
-                                                    class="form-select list-group-item-success w-50"
+                                            <select asp-for="@Model.Status" class="form-select list-group-item-success w-50"
                                                     asp-items="@Html.GetEnumSelectList<OrderStatus>()">
                                             </select>
                                         </p>
@@ -119,9 +118,7 @@
                                         <tr align="center" class="align-baseline">
                                             <td class="fw-bold">@(i + 1)</td>
                                             <td align="left">@Model.Items[i].Product.Name</td>
-                                            <td align="left">
-                                                @Model.Items[i].Product.Cost.ToString("c")
-                                            </td>
+                                            <td align="left">@Model.Items[i].Product.Cost.ToString("c")</td>
                                             <td>@Model.Items[i].Quantity</td>
                                             <td class="fw-bold">@Model.Items[i].Cost.ToString("c")</td>
                                         </tr>
@@ -134,8 +131,9 @@
 
                 <div class="text-center mt-5">
                     <button class="btn btn-outline-success" type="submit"
-                            asp-controller="Admin"
-                            asp-action="UpdateOrderStatus"
+                            asp-area="Admin"
+                            asp-controller="Order"
+                            asp-action="UpdateStatus"
                             asp-route-orderId=@Model.Id>
                         Обновить статус
                     </button>

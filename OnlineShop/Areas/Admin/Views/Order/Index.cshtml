@@ -10,7 +10,7 @@
             <h2 class="row-title">Заказы</h2>
         </div>
 
-        @if (Model?.Count > 0)
+        @if (Model != null && Model.Count > 0)
         {
             <div class="row justify-content-center mt-3">
                 <div class="col-12">
@@ -38,8 +38,9 @@
                                     <td>@Model[i].CreationDateTime.ToShortTimeString()</td>
                                     <td align="left">
                                         <a class="text-success"
-                                           asp-controller="Admin"
-                                           asp-action="DetailOrder"
+                                           asp-area="Admin"
+                                           asp-controller="Order"
+                                           asp-action="Detail"
                                            asp-route-OrderId="@Model[i].Id">
                                             Подробнее
                                         </a>
@@ -68,3 +69,4 @@
 
     </div>
 </div>
+

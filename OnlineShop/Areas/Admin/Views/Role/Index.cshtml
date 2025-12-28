@@ -10,14 +10,15 @@
             <h2 class="row-title">Роли</h2>
         </div>
 
-        @if (Model?.Count > 0)
+        @if (Model != null && Model.Count > 0)
         {
             <div class="row justify-content-center mt-3">
                 <div class="col-12">
                     <div class="text-end">
                         <a class="btn btn-outline-success mb-2 mt-2"
-                           asp-controller="Admin"
-                           asp-action="AddRole">
+                           asp-area="Admin"
+                           asp-controller="Role"
+                           asp-action="Add">
                             Добавить новую роль
                         </a>
                     </div>
@@ -39,8 +40,9 @@
                                     </td>
                                     <td>
                                         <a class="btn btn-outline-success"
-                                           asp-controller="Admin"
-                                           asp-action="DeleteRole"
+                                           asp-area="Admin"
+                                           asp-controller="Role"
+                                           asp-action="Delete"
                                            asp-route-roleId="@Model[i].Id">
                                             Удалить
                                         </a>
@@ -67,8 +69,9 @@
             </div>
             <div class="text-center mt-5">
                 <a class="btn btn-outline-success mb-2 mt-2"
-                   asp-controller="Admin"
-                   asp-action="AddRole">
+                   asp-area="Admin"
+                   asp-controller="Role"
+                   asp-action="Add">
                     Добавить новую роль
                 </a>
             </div>
@@ -76,3 +79,4 @@
 
     </div>
 </div>
+

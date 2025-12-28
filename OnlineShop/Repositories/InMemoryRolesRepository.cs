@@ -1,5 +1,5 @@
-﻿using OnlineShop.Interfaces;
-using OnlineShop.Models;
+﻿using OnlineShop.Areas.Admin.Models;
+using OnlineShop.Interfaces;
 
 namespace OnlineShop.Repositories;
 
