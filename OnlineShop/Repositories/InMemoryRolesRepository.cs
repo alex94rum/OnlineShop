@@ -7,6 +7,18 @@ public class InMemoryRolesRepository : IRolesRepository
 {
     private readonly List<Role> _roles = [];
 
+    public InMemoryRolesRepository()
+    {
+        _roles =
+        [
+            new Role(){Id = Guid.NewGuid(), Name = "Admin"},
+            new Role(){Id = Guid.NewGuid(), Name = "Moderator"},
+            new Role(){Id = Guid.NewGuid(), Name = "User"},
+            new Role(){Id = Guid.NewGuid(), Name = "Developer"},
+            new Role(){Id = Guid.NewGuid(), Name = "Guest"},
+        ];
+    }
+
     public void Add(Role role)
     {
         role.Id = Guid.NewGuid();

@@ -81,6 +81,9 @@ public class AccountController : Controller
         {
             Login = registration.Login,
             Password = registration.Password,
+            FirstName = registration.FirstName,
+            LastName = registration.LastName,
+            Phone = registration.Phone,
         };
 
         _usersRepository.Add(user);
