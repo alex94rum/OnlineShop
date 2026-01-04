@@ -28,14 +28,16 @@ try //начало блока для обработки ошибок запуска приложения
     builder.Services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
     builder.Services.AddSingleton<IComparisonsRepository, InMemoryComparisonsRepository>();
     builder.Services.AddSingleton<IRolesRepository, InMemoryRolesRepository>();
+    builder.Services.AddSingleton<IUsersRepository, InMemoryUsersRepository>();
 
     // добавление английской культуры по умолчанию
     builder.Services.Configure<RequestLocalizationOptions>(options =>
     {
         var supportedCultures = new[]
         {
-        new CultureInfo("en-US")
-    };
+            new CultureInfo("en-US")
+        };
+
         options.DefaultRequestCulture = new RequestCulture("en-US");
         options.SupportedCultures = supportedCultures;
         options.SupportedUICultures = supportedCultures;
@@ -46,7 +48,7 @@ try //начало блока для обработки ошибок запуска приложения
     app.UseSerilogRequestLogging(); //замена логирования, используемого по умолчанию в ASP.NET Core, 
                                     //на ведение журнала запросов Serilog
     app.UseHttpsRedirection();
-    app.UseRequestLocalization(); // добавление культурыЫ
+    app.UseRequestLocalization(); // добавление культуры
     app.UseStaticFiles();
     app.UseRouting();
     app.UseAuthorization();
