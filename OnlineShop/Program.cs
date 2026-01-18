@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connection = builder.Configuration.GetConnectionString("OnlineShopConnection");
+string connectionPstgres = builder.Configuration.GetConnectionString("OnlineShopConnectionPosgres");
+string connectionMssql = builder.Configuration.GetConnectionString("OnlineShopConnectionMSSQL");
 
 Log.Logger = new LoggerConfiguration()
         .CreateLogger(); //инициализация глобального логера Serilog с базовой конфигурацией
@@ -49,7 +50,8 @@ try //начало блока для обработки ошибок запуска приложения
         options.SupportedUICultures = supportedCultures;
     });
 
-    builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
+    builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionPstgres)); // Psotgres
+    builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionMssql)); // MSSQL
 
     var app = builder.Build();
 
