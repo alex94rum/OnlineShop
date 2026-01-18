@@ -36,7 +36,7 @@ public class CartsDbRepository : ICartsRepository
                     {
                         Product = product,
                         Quantity = 1,
-                        Cart = existingCart
+                        //Cart = existingCart
                     }
 
             };
@@ -52,7 +52,7 @@ public class CartsDbRepository : ICartsRepository
                 {
                     Product = product,
                     Quantity = 1,
-                    Cart = existingCart
+                    //Cart = existingCart
                 };
                 existingCart.Items.Add(newCartItem);
             }

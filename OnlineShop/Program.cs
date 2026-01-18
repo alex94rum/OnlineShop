@@ -30,7 +30,7 @@ try //начало блока для обработки ошибок запуска приложения
 
     builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
     builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
-    builder.Services.AddSingleton<IOrdersRepository, InMemoryOrdersRepository>();
+    builder.Services.AddTransient<IOrdersRepository, OrdersDbRepository>();
     builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
     builder.Services.AddTransient<IComparisonsRepository, ComparisonsDbRepository>();
     builder.Services.AddSingleton<IRolesRepository, InMemoryRolesRepository>();

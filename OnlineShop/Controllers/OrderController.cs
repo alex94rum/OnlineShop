@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 using OnlineShop.Helpers;
-using OnlineShop.Interfaces;
 using OnlineShop.Models;
 
 namespace OnlineShop.Controllers;
@@ -21,7 +21,7 @@ public class OrderController : Controller
     {
         var cart = _cartsRepository.TryGetByUserId(Constants.UserId);
 
-        var order = new Order()
+        var order = new OrderViewModel()
         {
             Items = cart?.Items.ToCartItemViewModels()
         };
@@ -30,7 +30,7 @@ public class OrderController : Controller
     }
 
     [HttpPost]
-    public IActionResult Buy(Order order)
+    public IActionResult Buy(OrderViewModel order)
     {
         var cart = _cartsRepository.TryGetByUserId(Constants.UserId);
 
@@ -47,14 +47,24 @@ public class OrderController : Controller
             return View(nameof(Index), order);
         }
 
-        _ordersRepository.Add(order);
+        var orderDb = new Order()
+        {
+            Id = order.Id,
+            UserId = order.UserId,
+            Items = cart.Items,
+            DeliveryUser = order.DeliveryUser.ToDeliveryUserDb(),
+            CreationDateTime = order.CreationDateTime,
+            Status = (OrderStatus)order.Status,
+        };
+
+        _ordersRepository.Add(orderDb);
 
         _cartsRepository.Clear(Constants.UserId);
 
-        return RedirectToAction(nameof(OrderSuccess));
+        return RedirectToAction(nameof(Success));
     }
 
-    public IActionResult OrderSuccess()
+    public IActionResult Success()
     {
         return View();
     }

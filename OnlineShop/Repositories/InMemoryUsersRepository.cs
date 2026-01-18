@@ -12,7 +12,7 @@ public class InMemoryUsersRepository : IUsersRepository
     public void Add(User user)
     {
         user.Id = Guid.NewGuid();
-        user.CreationDateTime = DateTime.Now;
+        user.CreationDateTime = DateTime.UtcNow;
 
         _users.Add(user);
     }

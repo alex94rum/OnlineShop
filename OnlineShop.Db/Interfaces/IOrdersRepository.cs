@@ -1,11 +1,11 @@
-﻿using OnlineShop.Models;
+﻿using OnlineShop.Db.Models;
 
-namespace OnlineShop.Interfaces;
+namespace OnlineShop.Db.Interfaces;
 
 public interface IOrdersRepository
 {
     void Add(Order order);
     List<Order> GetAll();
-    Order? TryGetById(Guid id);
+    Order? TryGetById(Guid orderId);
     void UpdateStatus(Guid orderId, OrderStatus status);
 }

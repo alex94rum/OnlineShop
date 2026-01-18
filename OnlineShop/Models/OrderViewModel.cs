@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OnlineShop.Models;
 
-public class Order
+public class OrderViewModel
 {
     public Guid Id { get; set; }
 
@@ -21,7 +21,7 @@ public class Order
 
     [Required]
     [AllowNull]
-    public DeliveryUser DeliveryUser { get; set; }
+    public DeliveryUserViewModel DeliveryUser { get; set; }
 
 
     [Required]
@@ -29,7 +29,7 @@ public class Order
 
 
     [Required]
-    public OrderStatus Status { get; set; }
+    public OrderStatusViewModel Status { get; set; }
 
 
     public decimal? TotalCost => Items?.Sum(item => item.Cost);
