@@ -51,7 +51,7 @@ try //начало блока для обработки ошибок запуска приложения
     });
 
     builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionPstgres)); // Psotgres
-    builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionMssql)); // MSSQL
+    //builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionMssql)); // MSSQL
 
     var app = builder.Build();
 
