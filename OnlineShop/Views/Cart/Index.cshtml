@@ -1,4 +1,4 @@
-﻿@model Cart
+﻿@model CartViewModel
 @{
     ViewData["Title"] = "Корзина";
 }
@@ -30,6 +30,7 @@
                             <td>@Model.Items[i].Product.Cost.ToString("c")</td>
                             <td>
                                 <a class="btn btn-success me-2"
+                                   asp-area=""
                                    asp-controller="Cart"
                                    asp-action="Subtract"
                                    asp-route-productId="@Model.Items[i].Product.Id">
@@ -37,6 +38,7 @@
                                 </a>
                                 @Model.Items[i].Quantity
                                 <a class="btn btn-success ms-2"
+                                   asp-area=""
                                    asp-controller="Cart"
                                    asp-action="Add"
                                    asp-route-productId="@Model.Items[i].Product.Id">
@@ -55,6 +57,7 @@
                         </th>
                         <th colspan="1">
                             <a class="btn btn-success"
+                               asp-area=""
                                asp-controller="Order"
                                asp-action="Index">
                                 Оформить заказ
@@ -67,6 +70,7 @@
 
         <div class="text-center">
             <a class="btn btn-outline-danger"
+               asp-area=""
                asp-controller="Cart"
                asp-action="Clear">
                 Очистить корзину
@@ -83,6 +87,7 @@ else
 
 <div class="text-center m-5">
     <a class="btn btn-outline-success"
+       asp-area=""
        asp-controller="Home"
        asp-action="Index">
         Продолжить покупки

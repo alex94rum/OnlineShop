@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Interfaces;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers;
 
@@ -16,9 +17,9 @@ public class FavoriteController : Controller
 
     public IActionResult Index()
     {
-        var favorites = _favoritesRepository.TryGetByUserId(Constants.UserId);
+        var favorite = _favoritesRepository.TryGetByUserId(Constants.UserId);
 
-        return View(favorites);
+        return View(favorite.ToFavoriteViewModel());
     }
 
     public IActionResult Add(int productId)

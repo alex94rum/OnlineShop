@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Helpers;
 using OnlineShop.Interfaces;
 using OnlineShop.Models;
 
@@ -21,7 +23,7 @@ public class OrderController : Controller
 
         var order = new Order()
         {
-            Items = cart?.Items ?? [],
+            Items = cart?.Items.ToCartItemViewModels()
         };
 
         return View(order);
@@ -37,7 +39,7 @@ public class OrderController : Controller
             return View(nameof(Index), order);
         }
 
-        order.Items = cart.Items;
+        order.Items = cart.Items.ToCartItemViewModels();
         order.UserId = Constants.UserId;
 
         if (!ModelState.IsValid)
@@ -49,12 +51,11 @@ public class OrderController : Controller
 
         _cartsRepository.Clear(Constants.UserId);
 
-        return RedirectToAction(nameof(Success));
+        return RedirectToAction(nameof(OrderSuccess));
     }
 
-    public IActionResult Success()
+    public IActionResult OrderSuccess()
     {
         return View();
     }
-
 }

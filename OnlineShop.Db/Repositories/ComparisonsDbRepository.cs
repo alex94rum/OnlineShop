@@ -1,15 +1,21 @@
-﻿using OnlineShop.Interfaces;
-using OnlineShop.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 
-namespace OnlineShop.Repositories;
+namespace OnlineShop.Db.Repositories;
 
-public class InMemoryComparisonsRepository : IComparisonsRepository
+public class ComparisonsDbRepository : IComparisonsRepository
 {
-    private readonly List<Comparison> _comparisons = [];
+    private readonly DatabaseContext _databaseContext;
+
+    public ComparisonsDbRepository(DatabaseContext databaseContext)
+    {
+        _databaseContext = databaseContext;
+    }
 
     public Comparison? TryGetByUserId(string userId)
     {
-        return _comparisons.FirstOrDefault(x => x.UserId == userId);
+        return _databaseContext.Comparisons.Include(x => x.Items).FirstOrDefault(x => x.UserId == userId);
     }
 
     public void Add(Product product, string userId)
@@ -20,12 +26,11 @@ public class InMemoryComparisonsRepository : IComparisonsRepository
         {
             existingComparison = new Comparison()
             {
-                Id = Guid.NewGuid(),
                 UserId = userId,
                 Items = [product]
             };
 
-            _comparisons.Add(existingComparison);
+            _databaseContext.Comparisons.Add(existingComparison);
         }
         else
         {
@@ -36,6 +41,8 @@ public class InMemoryComparisonsRepository : IComparisonsRepository
                 existingComparison.Items.Add(product);
             }
         }
+
+        _databaseContext.SaveChanges();
     }
 
     public void Delete(int productId, string userId)
@@ -49,6 +56,7 @@ public class InMemoryComparisonsRepository : IComparisonsRepository
             existingComparison?.Items.Remove(existingComparisonItem);
         }
 
+        _databaseContext.SaveChanges();
     }
 
     public void Clear(string userId)
@@ -57,7 +65,10 @@ public class InMemoryComparisonsRepository : IComparisonsRepository
 
         if (existingComparison != null)
         {
-            _comparisons.Remove(existingComparison);
+            _databaseContext.Comparisons.Remove(existingComparison);
+
+            _databaseContext.SaveChanges();
         }
+
     }
 }

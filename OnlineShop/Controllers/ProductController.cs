@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Interfaces;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers;
 
@@ -16,6 +17,6 @@ public class ProductController : Controller
     {
         var product = _productsRepository.TryGetById(id);
 
-        return View(product);
+        return View(product?.ToProductViewModel());
     }
 }

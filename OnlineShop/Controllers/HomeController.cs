@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Interfaces;
-using OnlineShop.Repositories;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers;
 
@@ -17,7 +17,7 @@ public class HomeController : Controller
     {
         var products = _productsRepository.GetAll();
 
-        return View(products);
+        return View(products.ToProductViewModels());
     }
 
     public IActionResult Search(string query)
@@ -29,6 +29,6 @@ public class HomeController : Controller
 
         var products = _productsRepository.Search(query);
 
-        return View(products);
+        return View(products.ToProductViewModels());
     }
 }

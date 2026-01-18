@@ -16,7 +16,7 @@ public class Order
 
     [ValidateNever]
     [AllowNull]
-    public List<CartItem> Items { get; set; }
+    public List<CartItemViewModel> Items { get; set; }
 
 
     [Required]

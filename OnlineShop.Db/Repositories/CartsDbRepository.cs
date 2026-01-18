@@ -1,15 +1,21 @@
-﻿using OnlineShop.Interfaces;
-using OnlineShop.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 
-namespace OnlineShop.Repositories;
+namespace OnlineShop.Db.Repositories;
 
-public class InMemoryCartsRepository : ICartsRepository
+public class CartsDbRepository : ICartsRepository
 {
-    private readonly List<Cart> _carts = [];
+    private readonly DatabaseContext _databaseContext;
+
+    public CartsDbRepository(DatabaseContext databaseContext)
+    {
+        _databaseContext = databaseContext;
+    }
 
     public Cart? TryGetByUserId(string userId)
     {
-        return _carts.FirstOrDefault(cart => cart.UserId == userId);
+        return _databaseContext.Carts.Include(x => x.Items).ThenInclude(x => x.Product).FirstOrDefault(x => x.UserId == userId);
     }
 
     public void Add(Product product, string userId)
@@ -20,32 +26,33 @@ public class InMemoryCartsRepository : ICartsRepository
         {
             existingCart = new Cart()
             {
-                Id = Guid.NewGuid(),
                 UserId = userId,
                 Items = new List<CartItem>()
+            };
+
+            existingCart.Items = new List<CartItem>()
                 {
                     new CartItem()
                     {
-                        Id = Guid.NewGuid(),
                         Product = product,
-                        Quantity = 1
+                        Quantity = 1,
+                        Cart = existingCart
                     }
-                }
+
             };
-            _carts.Add(existingCart);
+            _databaseContext.Carts.Add(existingCart);
         }
         else
         {
-            var existingCartItem = existingCart.Items.FirstOrDefault(item =>
-                item.Product.Id == product.Id);
+            var existingCartItem = existingCart.Items.FirstOrDefault(item => item.Product.Id == product.Id);
 
             if (existingCartItem == null)
             {
                 var newCartItem = new CartItem()
                 {
-                    Id = Guid.NewGuid(),
                     Product = product,
-                    Quantity = 1
+                    Quantity = 1,
+                    Cart = existingCart
                 };
                 existingCart.Items.Add(newCartItem);
             }
@@ -54,6 +61,8 @@ public class InMemoryCartsRepository : ICartsRepository
                 existingCartItem.Quantity++;
             }
         }
+
+        _databaseContext.SaveChanges();  // Сохраняем изменения в БД
     }
 
     public void Subtract(int productId, string userId)
@@ -73,6 +82,8 @@ public class InMemoryCartsRepository : ICartsRepository
         {
             existingCart?.Items.Remove(existingCartItem);
         }
+
+        _databaseContext.SaveChanges();  // Сохраняем изменения в БД
     }
 
     public void Clear(string userId)
@@ -81,7 +92,9 @@ public class InMemoryCartsRepository : ICartsRepository
 
         if (existingCart != null)
         {
-            _carts.Remove(existingCart);
+            _databaseContext.Carts.Remove(existingCart);
+
+            _databaseContext.SaveChanges();  // Сохраняем изменения в БД
         }
     }
 }

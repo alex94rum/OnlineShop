@@ -1,15 +1,21 @@
-﻿using OnlineShop.Interfaces;
-using OnlineShop.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
 
-namespace OnlineShop.Repositories;
+namespace OnlineShop.Db.Repositories;
 
-public class InMemoryFavoritesRepository : IFavoritesRepository
+public class FavoritesDbRepository : IFavoritesRepository
 {
-    private readonly List<Favorite> _favorites = [];
+    private readonly DatabaseContext _databaseContext;
+
+    public FavoritesDbRepository(DatabaseContext databaseContext)
+    {
+        _databaseContext = databaseContext;
+    }
 
     public Favorite? TryGetByUserId(string userId)
     {
-        return _favorites.FirstOrDefault(x => x.UserId == userId);
+        return _databaseContext.Favorites.Include(x => x.Items).FirstOrDefault(x => x.UserId == userId);
     }
 
     public void Add(Product product, string userId)
@@ -20,12 +26,11 @@ public class InMemoryFavoritesRepository : IFavoritesRepository
         {
             existingFavorite = new Favorite()
             {
-                Id = Guid.NewGuid(),
                 UserId = userId,
                 Items = [product]
             };
 
-            _favorites.Add(existingFavorite);
+            _databaseContext.Favorites.Add(existingFavorite);
         }
         else
         {
@@ -36,6 +41,8 @@ public class InMemoryFavoritesRepository : IFavoritesRepository
                 existingFavorite.Items.Add(product);
             }
         }
+
+        _databaseContext.SaveChanges();
     }
 
     public void Delete(int productId, string userId)
@@ -49,6 +56,7 @@ public class InMemoryFavoritesRepository : IFavoritesRepository
             existingFavorite?.Items.Remove(existingFavoriteItem);
         }
 
+        _databaseContext.SaveChanges();
     }
 
     public void Clear(string userId)
@@ -57,7 +65,9 @@ public class InMemoryFavoritesRepository : IFavoritesRepository
 
         if (existingFavorite != null)
         {
-            _favorites.Remove(existingFavorite);
+            _databaseContext.Favorites.Remove(existingFavorite);
+
+            _databaseContext.SaveChanges();
         }
     }
 }

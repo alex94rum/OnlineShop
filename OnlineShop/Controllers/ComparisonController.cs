@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Interfaces;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers;
 
@@ -16,9 +17,9 @@ public class ComparisonController : Controller
 
     public IActionResult Index()
     {
-        var comparisons = _comparisonsRepository.TryGetByUserId(Constants.UserId);
+        var comparison = _comparisonsRepository.TryGetByUserId(Constants.UserId);
 
-        return View(comparisons);
+        return View(comparison?.ToComparisonViewModel());
     }
 
     public IActionResult Add(int productId)

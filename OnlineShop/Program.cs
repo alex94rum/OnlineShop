@@ -3,8 +3,14 @@ using OnlineShop.Interfaces;
 using OnlineShop.Repositories;
 using System.Globalization;
 using Serilog;
+using OnlineShop.Db.Repositories;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+string connection = builder.Configuration.GetConnectionString("OnlineShopConnection");
 
 Log.Logger = new LoggerConfiguration()
         .CreateLogger(); //инициализация глобального логера Serilog с базовой конфигурацией
@@ -22,11 +28,11 @@ try //начало блока для обработки ошибок запуска приложения
     // Add services to the container.
     builder.Services.AddControllersWithViews();
 
-    builder.Services.AddSingleton<IProductsRepository, InMemoryProductsRepository>();
-    builder.Services.AddSingleton<ICartsRepository, InMemoryCartsRepository>();
+    builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
+    builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
     builder.Services.AddSingleton<IOrdersRepository, InMemoryOrdersRepository>();
-    builder.Services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
-    builder.Services.AddSingleton<IComparisonsRepository, InMemoryComparisonsRepository>();
+    builder.Services.AddTransient<IFavoritesRepository, FavoritesDbRepository>();
+    builder.Services.AddTransient<IComparisonsRepository, ComparisonsDbRepository>();
     builder.Services.AddSingleton<IRolesRepository, InMemoryRolesRepository>();
     builder.Services.AddSingleton<IUsersRepository, InMemoryUsersRepository>();
 
@@ -42,6 +48,8 @@ try //начало блока для обработки ошибок запуска приложения
         options.SupportedCultures = supportedCultures;
         options.SupportedUICultures = supportedCultures;
     });
+
+    builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection));
 
     var app = builder.Build();
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Interfaces;
-using OnlineShop.Repositories;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Helpers;
 
 namespace OnlineShop.Controllers;
 
@@ -19,7 +19,7 @@ public class CartController : Controller
     {
         var cart = _cartsRepository.TryGetByUserId(Constants.UserId);
 
-        return View(cart);
+        return View(cart.ToCartViewModel());
     }
 
     public IActionResult Add(int productId)
