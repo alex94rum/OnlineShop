@@ -32,6 +32,13 @@ public class DatabaseContext : DbContext
             .HasConversion(
                 v => v.ToUniversalTime(),
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+        modelBuilder.Entity<Product>().HasData(new List<Product>()
+        {
+            new() { Id = 1, Name = "Продукт 1", Cost = 100, Description = "Описание 1", PhotoPath = "/img/anyProduct.png" },
+            new() { Id = 2, Name = "Продукт 2", Cost = 200, Description = "Описание 2", PhotoPath = "/img/anyProduct.png" },
+            new() { Id = 3, Name = "Продукт 3", Cost = 300, Description = "Описание 3", PhotoPath = "/img/anyProduct.png" },
+        });
     }
 
 }
