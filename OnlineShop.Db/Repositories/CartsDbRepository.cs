@@ -27,7 +27,8 @@ public class CartsDbRepository : ICartsRepository
             existingCart = new Cart()
             {
                 UserId = userId,
-                Items = new List<CartItem>()
+                Items = new List<CartItem>(),
+                CreationDateTime = DateTime.Now,
             };
 
             existingCart.Items = new List<CartItem>()
