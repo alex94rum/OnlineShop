@@ -50,7 +50,7 @@ try //начало блока для обработки ошибок запуска приложения
         options.SupportedUICultures = supportedCultures;
     });
 
-    builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionPstgres)); // Psotgres
+    builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionPstgres)); // Postgres
     //builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionMssql)); // MSSQL
 
     var app = builder.Build();
