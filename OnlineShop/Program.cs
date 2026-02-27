@@ -27,7 +27,7 @@ try //начало блока для обработки ошибок запуска приложения
     });
 
     // Add services to the container.
-    builder.Services.AddControllersWithViews();
+    builder.Services.AddControllersWithViews().AddViewLocalization();
 
     builder.Services.AddTransient<IProductsRepository, ProductsDbRepository>();
     builder.Services.AddTransient<ICartsRepository, CartsDbRepository>();
@@ -37,12 +37,18 @@ try //начало блока для обработки ошибок запуска приложения
     builder.Services.AddSingleton<IRolesRepository, InMemoryRolesRepository>();
     builder.Services.AddSingleton<IUsersRepository, InMemoryUsersRepository>();
 
+    builder.Services.AddLocalization(opt =>
+    {
+        opt.ResourcesPath = "Resources";
+    });
+
     // добавление английской культуры по умолчанию
     builder.Services.Configure<RequestLocalizationOptions>(options =>
     {
         var supportedCultures = new[]
         {
-            new CultureInfo("en-US")
+            new CultureInfo("en-US"),
+            new CultureInfo("ru-RU"),
         };
 
         options.DefaultRequestCulture = new RequestCulture("en-US");

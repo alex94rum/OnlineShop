@@ -1,4 +1,7 @@
 ﻿@model List<ProductViewModel>
+
+@inject IViewLocalizer ViewLocalizer
+
 @{
     ViewData["Title"] = "Главная";
 }
@@ -6,7 +9,7 @@
 @await Html.PartialAsync("SearchBlock")
 
 <div class="text-center text-uppercase text-success mb-5 mt-5">
-    <h2 class="row-title">Каталог товаров</h2>
+    <h2 class="row-title">@ViewLocalizer["catalog.name"]</h2>
 </div>
 
 <div class="row mt-3">
