@@ -1,0 +1,36 @@
+﻿@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Builder;
+
+@inject IOptions<RequestLocalizationOptions> LocOptions;
+
+@{
+    string returnUrl = ViewContext.HttpContext.Request.Path;
+
+    var requestCultere = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+                                .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+                                .ToList();
+}
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                &copy; 2025 - OnlineShopWebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+            <div class="col">
+                <form asp-area="" asp-controller="Home" asp-action="ChangeLanguage" method="post">
+                    <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
+                    <select id="culture"
+                            name="culture"
+                            class="form-control"
+                            onchange="this.form.submit();"
+                            asp-items="cultureItems"
+                            asp-for="@requestCultere.RequestCulture.UICulture.Name">
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</footer>
